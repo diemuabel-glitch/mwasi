@@ -44,4 +44,4 @@ Les boutons de connexion d’un fournisseur restent désactivés tant que celui-
 
 La première connexion Google, Facebook ou TikTok crée le compte Supabase si nécessaire; les connexions suivantes ouvrent le même compte du fournisseur. Google et Facebook utilisent les fournisseurs intégrés de Supabase. TikTok nécessite un fournisseur personnalisé, configuré séparément dans le tableau de bord.
 
-Crédit développeur : Abel Diemu.
+Crédit développeur : Abel Diemu. Contact : [+243 84 232 2495](tel:+243842322495).
