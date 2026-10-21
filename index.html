@@ -273,6 +273,55 @@
     .auth-signout { width: 100%; margin-top: 9px; padding: 7px; border: 0; background: transparent; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; font-size: 11px; }
     .auth-signout:hover { color: var(--coral); }
     .profile-local-title { margin-bottom: 4px; font-family: var(--serif); font-size: 19px; font-weight: 400; }
+    .auth-form { display: grid; gap: 9px; margin-top: 12px; }
+    .auth-form[hidden], .chat-workspace[hidden], .auth-providers[hidden] { display: none; }
+    .auth-form label:not(.setting-option) { display: block; margin: 5px 0 3px; font-size: 12px; font-weight: 700; }
+    .auth-form input[type="email"], .auth-form input[type="password"], .auth-form input[type="text"] { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--ink); }
+    .auth-consent { margin: 5px 0 0 !important; color: var(--muted) !important; font-size: 10px !important; }
+    .auth-mode-toggle { width: 100%; margin-top: 9px; padding: 7px; border: 0; background: transparent; color: var(--green); text-decoration: underline; text-underline-offset: 3px; font-size: 11px; }
+    .auth-account { margin-top: 10px; padding: 11px; border-radius: 5px; background: var(--green-soft); color: var(--ink); font-size: 11px; }
+    .chat-panel { margin-top: 20px; padding: 21px 22px; }
+    .chat-panel h2 { margin-bottom: 5px; font-family: var(--serif); font-size: 23px; font-weight: 400; }
+    .chat-intro { margin-bottom: 14px; color: var(--muted); font-size: 12px; }
+    .chat-auth-required { padding: 15px; border-radius: 5px; background: var(--green-soft); color: var(--ink); font-size: 12px; }
+    .chat-auth-required button { padding: 0; border: 0; background: transparent; color: var(--green); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .chat-workspace { display: grid; grid-template-columns: minmax(220px, .75fr) minmax(0, 1.25fr); gap: 16px; }
+    .chat-sidebar, .chat-thread { min-width: 0; }
+    .chat-sidebar { display: grid; align-content: start; gap: 12px; }
+    .chat-subpanel { padding: 13px; border: 1px solid var(--line); border-radius: 5px; }
+    .chat-subpanel h3, .chat-thread h3 { margin-bottom: 8px; font-family: var(--serif); font-size: 17px; font-weight: 400; }
+    .chat-subpanel .field-hint { margin-top: 6px; }
+    .chat-search-row { display: flex; gap: 7px; }
+    .chat-search-row input { min-width: 0; flex: 1; min-height: 38px; padding: 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); }
+    .chat-search-row .primary-button { width: auto; min-height: 38px; padding: 0 12px; margin: 0; font-size: 11px; }
+    .chat-list { display: grid; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
+    .chat-list:empty { display: none; }
+    .chat-list-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 11px; }
+    .chat-list-item span { min-width: 0; overflow-wrap: anywhere; }
+    .chat-list-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 5px; }
+    .chat-list-button { min-height: 30px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); font-size: 10px; }
+    .chat-list-button:hover { border-color: var(--green); color: var(--green); }
+    .chat-list-button.danger { color: var(--coral); }
+    .chat-empty { margin: 8px 0 0; color: var(--muted); font-size: 11px; }
+    .chat-thread { display: grid; grid-template-rows: auto minmax(150px, 1fr) auto auto; gap: 9px; padding: 13px; border: 1px solid var(--line); border-radius: 5px; }
+    .chat-thread-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .chat-thread-heading h3 { margin: 0; }
+    .chat-thread-actions { display: flex; gap: 6px; }
+    .chat-messages { display: flex; min-height: 180px; max-height: 360px; flex-direction: column; gap: 8px; overflow-y: auto; padding: 8px; border-radius: 4px; background: var(--paper); }
+    .chat-message { max-width: 85%; padding: 8px 10px; border-radius: 7px; background: var(--surface); color: var(--ink); font-size: 12px; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .chat-message.own { align-self: end; background: var(--green); color: white; }
+    .chat-message time { display: block; margin-top: 4px; opacity: .75; font-size: 9px; }
+    .chat-send-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; align-items: end; }
+    .chat-send-form textarea { width: 100%; min-height: 42px; max-height: 110px; padding: 9px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); resize: vertical; }
+    .chat-send-form .primary-button { width: auto; min-height: 40px; padding: 0 14px; margin: 0; font-size: 11px; }
+    .chat-status { min-height: 18px; margin: 0; color: var(--muted); font-size: 10px; }
+    .chat-status[data-state="error"] { color: var(--coral); }
+    .chat-report-form { display: grid; gap: 7px; padding: 10px; border: 1px solid var(--line); border-radius: 4px; }
+    .chat-report-form[hidden] { display: none; }
+    .chat-report-form select, .chat-report-form textarea { width: 100%; min-height: 36px; padding: 7px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); font: inherit; font-size: 11px; }
+    .chat-report-form textarea { min-height: 60px; resize: vertical; }
+    .chat-report-form .primary-button { min-height: 36px; margin: 0; font-size: 11px; }
+    .chat-panel .setting-option { margin: 0 0 10px; }
     .profile-dialog-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
     .profile-dialog-actions .primary-button { width: auto; min-width: 150px; padding: 0 15px; margin: 0; }
     .profile-delete { padding: 7px 0; border: 0; background: transparent; color: var(--coral); text-decoration: underline; text-underline-offset: 3px; font-size: 11px; }
@@ -333,6 +382,9 @@
       .profile-dialog { padding: 21px; }
       .profile-dialog-actions { align-items: stretch; flex-direction: column-reverse; }
       .profile-dialog-actions .primary-button { width: 100%; }
+      .chat-panel { padding: 18px 17px; }
+      .chat-workspace { grid-template-columns: 1fr; }
+      .chat-messages { max-height: 280px; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -511,6 +563,73 @@
         </aside>
       </div>
 
+      <section class="panel chat-panel" aria-labelledby="chat-title">
+        <h2 id="chat-title">Discussions privées</h2>
+        <p class="chat-intro">Échangez avec d’autres membres qui ont choisi d’être trouvables. Votre profil ne montre que votre pseudo. Ne partagez pas d’informations médicales ou personnelles dans le chat.</p>
+        <div id="chat-auth-required" class="chat-auth-required">Connectez-vous ou <button id="chat-auth-open" type="button">créez un compte</button> pour utiliser les discussions privées.</div>
+        <div id="chat-workspace" class="chat-workspace" hidden>
+          <div class="chat-sidebar">
+            <section class="chat-subpanel" aria-labelledby="chat-discovery-title">
+              <h3 id="chat-discovery-title">Être trouvable</h3>
+              <label class="setting-option" for="chat-discoverable">
+                <input id="chat-discoverable" type="checkbox">
+                <span><strong>Afficher mon pseudo dans la recherche</strong><small>Vous pouvez désactiver cette option à tout moment.</small></span>
+              </label>
+              <form id="chat-search-form">
+                <label for="chat-search">Rechercher un pseudo</label>
+                <div class="chat-search-row">
+                  <input id="chat-search" name="search" type="search" minlength="2" maxlength="40" autocomplete="off" required>
+                  <button class="primary-button" type="submit">Chercher</button>
+                </div>
+              </form>
+              <ul class="chat-list" id="chat-search-results" aria-label="Membres trouvés"></ul>
+              <p class="chat-empty" id="chat-search-empty" hidden>Aucun membre trouvé.</p>
+            </section>
+            <section class="chat-subpanel" aria-labelledby="chat-requests-title">
+              <h3 id="chat-requests-title">Demandes de discussion</h3>
+              <ul class="chat-list" id="chat-requests-list"></ul>
+              <p class="chat-empty" id="chat-requests-empty">Aucune demande en attente.</p>
+            </section>
+            <section class="chat-subpanel" aria-labelledby="chat-conversations-title">
+              <h3 id="chat-conversations-title">Mes conversations</h3>
+              <ul class="chat-list" id="chat-conversations-list"></ul>
+              <p class="chat-empty" id="chat-conversations-empty">Aucune conversation pour le moment.</p>
+            </section>
+          </div>
+          <section class="chat-thread" aria-labelledby="chat-thread-title">
+            <div class="chat-thread-heading">
+              <h3 id="chat-thread-title">Choisissez une conversation</h3>
+              <div id="chat-thread-actions" class="chat-thread-actions" hidden>
+                <button class="chat-list-button danger" id="chat-report-toggle" type="button">Signaler</button>
+                <button class="chat-list-button danger" id="chat-block" type="button">Bloquer</button>
+              </div>
+            </div>
+            <div class="chat-messages" id="chat-messages" aria-live="polite">
+              <p class="chat-empty">Vos messages privés apparaîtront ici.</p>
+            </div>
+            <form class="chat-report-form" id="chat-report-form" hidden>
+              <label for="chat-report-reason">Motif du signalement</label>
+              <select id="chat-report-reason" required>
+                <option value="">Choisir un motif</option>
+                <option value="harassment">Harcèlement ou menaces</option>
+                <option value="spam">Spam ou sollicitation</option>
+                <option value="inappropriate">Contenu inapproprié</option>
+                <option value="other">Autre problème</option>
+              </select>
+              <label for="chat-report-details">Détails (facultatif)</label>
+              <textarea id="chat-report-details" maxlength="1000"></textarea>
+              <button class="primary-button" type="submit">Envoyer le signalement</button>
+            </form>
+            <form class="chat-send-form" id="chat-send-form">
+              <label class="sr-only" for="chat-message-input">Votre message</label>
+              <textarea id="chat-message-input" maxlength="2000" placeholder="Écrire un message…" required disabled></textarea>
+              <button class="primary-button" id="chat-send" type="submit" disabled>Envoyer</button>
+            </form>
+            <p class="chat-status" id="chat-status" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+
       <footer class="footer">
         <p>Mwasi ne remplace pas l’avis d’un professionnel de santé.</p>
         <p><span class="status">●</span> Données de cycle enregistrées uniquement dans ce navigateur.</p>
@@ -521,11 +640,32 @@
   </div>
 
   <dialog class="profile-dialog" id="profile-dialog" aria-labelledby="profile-title">
-    <form id="profile-form">
+    <div>
       <h2 id="profile-title">Compte Mwasi</h2>
       <section class="auth-section" aria-labelledby="auth-title">
         <h3 id="auth-title">Créer un compte ou se connecter</h3>
-        <p class="auth-copy">Utilisez un compte Google, Facebook ou TikTok. Vos données de cycle et votre journal restent privés sur cet appareil.</p>
+        <p class="auth-copy">Créez un compte avec un pseudo et une adresse e-mail. Les profils visibles ne montrent que le pseudo, jamais les informations de cycle.</p>
+        <form class="auth-form" id="auth-form">
+          <div id="auth-signup-fields">
+            <label for="auth-display-name">Pseudo</label>
+            <input id="auth-display-name" name="display-name" type="text" minlength="2" maxlength="40" autocomplete="nickname" required>
+          </div>
+          <div>
+            <label for="auth-email">Adresse e-mail</label>
+            <input id="auth-email" name="email" type="email" maxlength="254" autocomplete="email" required>
+          </div>
+          <div>
+            <label for="auth-password">Mot de passe</label>
+            <input id="auth-password" name="password" type="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+          </div>
+          <div id="auth-confirm-field">
+            <label for="auth-password-confirm">Confirmer le mot de passe</label>
+            <input id="auth-password-confirm" name="password-confirm" type="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+          </div>
+          <button class="primary-button" id="auth-submit" type="submit">Créer mon compte</button>
+        </form>
+        <button class="auth-mode-toggle" id="auth-mode-toggle" type="button">J’ai déjà un compte : me connecter</button>
+        <p class="auth-consent">En créant un compte, vous acceptez que votre adresse e-mail soit utilisée pour l’authentification. Les messages sont enregistrés en ligne et visibles par les personnes de la conversation; les signalements peuvent être examinés par le responsable du service.</p>
         <div class="auth-providers">
           <button class="auth-provider" type="button" data-auth-provider="google" disabled>Continuer avec Google</button>
           <button class="auth-provider" type="button" data-auth-provider="facebook" disabled>Continuer avec Facebook</button>
@@ -534,16 +674,22 @@
         <p class="auth-status" id="auth-status" role="status" aria-live="polite">La connexion en ligne sera disponible après la configuration de Supabase.</p>
         <button class="auth-signout" id="auth-signout" type="button" hidden>Se déconnecter</button>
       </section>
+      <section id="auth-account-details" class="auth-account" hidden>
+        <strong id="auth-account-name"></strong>
+        <p id="auth-account-email"></p>
+      </section>
+      <form id="profile-form">
       <h3 class="profile-local-title">Nom sur cet appareil</h3>
-      <p>Ce nom d’affichage reste enregistré uniquement dans ce navigateur.</p>
+      <p>Ce nom reste enregistré dans ce navigateur. Il est indépendant du pseudo du compte en ligne.</p>
       <label for="profile-name">Nom ou prénom à afficher</label>
-      <input id="profile-name" name="profile-name" type="text" maxlength="50" autocomplete="given-name" required>
+      <input id="profile-name" name="profile-name" type="text" minlength="2" maxlength="50" autocomplete="given-name" required>
       <p class="profile-message" id="profile-message" role="status" aria-live="polite"></p>
       <div class="profile-dialog-actions">
         <button class="profile-delete" id="profile-delete" type="button" hidden>Supprimer ce profil</button>
         <button class="primary-button" type="submit">Enregistrer mon profil</button>
       </div>
-    </form>
+      </form>
+    </div>
   </dialog>
 
   <dialog class="profile-dialog" id="display-dialog" aria-labelledby="display-title">
@@ -1055,7 +1201,8 @@
         byId('profile-message').textContent = '';
         renderProfile();
         byId('profile-dialog').showModal();
-        byId('profile-name').focus();
+        const accountForm = byId('auth-form');
+        (accountForm.hidden ? byId('profile-name') : byId('auth-email')).focus();
       });
       byId('display-trigger').addEventListener('click', () => {
         byId('display-theme').value = displayData.theme;
