@@ -7,6 +7,8 @@ Le logo de marque est fourni dans `mwasi-logo.png`; l’image originale est cons
 
 Ouvrez `index.html` dans un navigateur récent. Aucune installation ni connexion Internet n’est nécessaire.
 
+Pour installer l’application sur Android, téléchargez `Mwasi.apk` depuis le bouton de l’écran d’accueil, puis ouvrez le fichier sur votre appareil. Android peut demander d’autoriser l’installation depuis cette source.
+
 ## Fonctionnalités
 
 - Création d’un profil personnel local avec nom d’affichage, sans mot de passe ni synchronisation en ligne.
