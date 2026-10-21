@@ -1,47 +1,57 @@
-# Mwasi
+# KOZ
 
-Mwasi est une application web simple de suivi du cycle menstruel, en français.
-Le logo de marque est fourni dans `mwasi-logo.png`; l’image originale est conservée dans `mwasi-logo.jfif`.
+KOZ est un réseau social en français qui rassemble un fil de publications, des vidéos courtes, des profils, des abonnements, une messagerie privée et des appels audio/vidéo.
 
-## Ouvrir l’application
+## Lancer le projet en local
 
-Ouvrez `index.html` dans un navigateur récent. Aucune installation ni connexion Internet n’est nécessaire.
+Depuis PowerShell, démarrez un serveur HTTP dans le dossier `Mwasi` :
 
-Pour installer l’application sur Android, téléchargez `Mwasi.apk` depuis le bouton de l’écran d’accueil, puis ouvrez le fichier sur votre appareil. Android peut demander d’autoriser l’installation depuis cette source.
+```powershell
+py -m http.server 8000
+```
+
+Ouvrez ensuite `http://localhost:8000` dans un navigateur récent. Ne lancez pas `index.html` directement depuis le système de fichiers : l’application charge son module JavaScript et la bibliothèque Supabase par HTTP. La connexion, le partage de contenus et les appels nécessitent une connexion Internet et le projet Supabase configuré dans `supabase-config.js`. Les appels et l’accès au micro et à la caméra exigent HTTPS ou `localhost`.
 
 ## Fonctionnalités
 
-- Création d’un compte en ligne par pseudo, adresse e-mail et mot de passe, avec confirmation de l’adresse e-mail selon le réglage Supabase.
-- Recherche facultative de pseudos et demandes de contact à accepter avant toute conversation privée.
-- Chat privé avec blocage et signalement. Les messages sont stockés dans Supabase; les données du cycle et le journal restent locaux.
-- Création d’un profil personnel local avec nom d’affichage, indépendant du pseudo du compte.
-- Préparation de la connexion Supabase avec Google, Facebook et TikTok. Ces fournisseurs restent désactivés tant que leurs identifiants OAuth ne sont pas configurés.
-- Estimation de la date des prochaines règles à partir du dernier début enregistré et de la durée habituelle du cycle.
-- Calendrier avec règles et fenêtre fertile estimées.
-- Personnalisation de l’affichage: thème clair, sombre ou système, contraste renforcé et animations réduites.
-- Rappel quotidien configurable avec notification du navigateur lorsque celui-ci l’autorise.
-- Historique des débuts de règles et mise à jour de la moyenne du cycle à partir des dates enregistrées.
-- Journal quotidien d’humeur, de symptômes, de douleur et de notes privées avec un résumé descriptif sur 7 jours.
-- Image botanique locale pour garder l’interface illustrée même hors connexion.
-- Enregistrement des repères dans le stockage local du navigateur.
-- Suppression des données depuis l’application.
-- Animations légères, désactivées par le réglage système de réduction des mouvements.
+- Création de compte avec nom, adresse e-mail, téléphone, mot de passe et photo de profil; connexion et vérification du téléphone par code SMS; inscription ou connexion avec Google, Facebook, TikTok et X.
+- Publications textuelles et téléversement de photos ou vidéos, avec réactions et commentaires.
+- Fil de la communauté, vue dédiée aux vidéos et profils personnels.
+- Recherche de membres, abonnements, demandes et conversations privées.
+- Appels audio ou vidéo entre participants d’une conversation acceptée, avec WebRTC et signalisation Supabase Realtime.
+- Permissions micro/caméra demandées à l’utilisateur dans le navigateur et l’application Android.
 
-Les dates sont des estimations informatives. Les cycles peuvent varier; l’ovulation et la fenêtre fertile ne peuvent pas être prédites avec certitude par ce calcul et ne constituent pas un moyen de contraception. Mwasi ne remplace pas l’avis d’un professionnel de santé.
+Les publications et médias partagés sont visibles par les membres connectés; les fichiers du stockage KOZ utilisent des URL publiques. Évite de publier des informations personnelles ou sensibles. Les appels sont chiffrés par WebRTC lorsqu’une connexion directe est établie; un service TURN peut relayer le trafic lorsque les réseaux ne permettent pas une connexion directe.
 
-Le nom du profil local, les repères du cycle, les rappels et les notes du journal restent dans le navigateur utilisé et ne sont pas synchronisés entre appareils. Le compte Supabase conserve l’adresse e-mail pour l’authentification, le pseudo et les préférences de visibilité. Les pseudo, demandes, messages, blocages et signalements de chat sont stockés en ligne. Les autres utilisateurs ne peuvent pas lire l’adresse e-mail ou les données de cycle. Un signalement peut être examiné par le propriétaire du projet depuis le tableau de bord Supabase. Effacer les données de navigation peut supprimer les informations locales, mais ne supprime pas le compte ni les messages en ligne.
+## Configuration Supabase
 
-Les notifications sont vérifiées lorsque Mwasi est ouvert et que le navigateur autorise les notifications. Dans cette version locale, les rappels ne peuvent pas être envoyés lorsque l’application est fermée.
+Le fichier `supabase-config.js` contient l’URL du projet et sa clé publique (publishable). Il ne doit jamais contenir de clé `service_role`, de mot de passe ni de secret TURN. `iceServers` configure les serveurs ICE/WebRTC; le serveur STUN fourni est un réglage de départ. Pour une connexion fiable entre réseaux restrictifs, configure des serveurs TURN privés avec des identifiants temporaires appropriés.
 
-## Configuration du compte et du chat Supabase
+Dans **SQL Editor** du tableau de bord Supabase, exécute les migrations dans l’ordre :
 
-L’URL et la clé publique du projet Mwasi sont déjà renseignées dans `supabase-config.js`. Le compte e-mail et le chat requièrent une connexion Internet. Avant de les utiliser sur un projet Supabase, exécutez une fois le script `supabase/migrations/20261021100000_profiles_and_private_chat.sql` dans **SQL Editor** du tableau de bord du projet. Ce script crée les tables, les politiques d’accès et les fonctions nécessaires au profil, aux demandes, au chat, au blocage et aux signalements. Vérifiez que son exécution s’est terminée sans erreur avant de créer des comptes.
+1. `supabase/migrations/20261021100000_profiles_and_private_chat.sql`
+2. `supabase/migrations/20261021123000_koz_social_and_calls.sql`
+3. `supabase/migrations/20261021140000_profile_avatars.sql`
 
-1. Le projet Supabase **Mwasi** utilise l’offre gratuite et une région européenne. Si vous recréez le projet, copiez son URL et sa clé publique `anon` (ou `publishable`) dans `supabase-config.js`. Ne mettez jamais une clé `service_role` ni un secret OAuth dans ce fichier.
-2. Dans **Authentication > URL Configuration**, conservez l’URL du site `https://diemuabel-glitch.github.io/mwasi/` et les URL de retour nécessaires. La confirmation d’e-mail est définie dans les paramètres d’authentification Supabase.
-3. Pour activer ultérieurement Google, Facebook ou TikTok, configurez les identifiants OAuth dans Supabase, autorisez les URL de retour du site et de l’application Android (`mwasi://login-callback`), puis activez uniquement le fournisseur configuré dans `supabase-config.js`. TikTok nécessite une configuration personnalisée Supabase.
-4. Déployez ensemble `supabase-config.js`, `auth.js` et `index.html`. L’APK affiche le site distant; les changements de l’interface sont donc disponibles après le déploiement du site. Reconstruisez l’APK uniquement si le code Android lui-même change.
+La première crée les profils et le chat privé; la seconde crée les tables sociales, le stockage des médias, les permissions d’accès et les fonctions de signalisation d’appel; la troisième ajoute le champ de photo de profil. Vérifie que chacune s’exécute sans erreur. Dans **Authentication > URL Configuration**, ajoute les URL de retour de ton site. L’inscription peut demander une confirmation par e-mail selon les réglages du projet.
 
-Un pseudo n’est trouvable que si son propriétaire active **Me rendre trouvable**. La demande doit être acceptée avant de commencer à envoyer des messages. Les utilisateurs peuvent bloquer un compte ou signaler une conversation; les signalements sont conservés dans `chat_reports` pour examen par le propriétaire du projet. Google, Facebook et TikTok ne sont pas activés par défaut.
+Pour la confirmation par téléphone, active le fournisseur **Phone** et configure un fournisseur SMS dans **Authentication > Providers**. La personne connectée demande un code depuis **Mon profil**, puis le saisit pour vérifier son numéro. Le téléphone est conservé dans Supabase Auth; il n’est pas ajouté aux profils publics. Les photos de profil utilisent le bucket `koz-media` existant et sont publiques, comme les autres médias du site.
+
+Les boutons Google, Facebook et X utilisent les fournisseurs OAuth intégrés de Supabase (**Google**, **Facebook** et **X / Twitter OAuth 2.0**). Crée une application développeur pour chacun, puis active le fournisseur et ajoute son Client ID et son secret dans **Authentication > Providers**. Enregistre l’URL de callback affichée par Supabase chez chaque fournisseur. Dans **Authentication > URL Configuration**, autorise `https://diemuabel-glitch.github.io/mwasi/`, `mwasi://login-callback` pour l’application Android et l’URL locale utilisée pour le test. Le bouton TikTok utilise l’identifiant de fournisseur personnalisé `custom:tiktok`; il faut d’abord l’ajouter dans Supabase **Authentication > Providers > New Provider** et le raccorder au Login Kit TikTok. TikTok exige une URL de redirection HTTPS enregistrée dans son portail; son protocole d’échange de code utilise `client_key`, il faut donc un adaptateur OAuth serveur compatible si le fournisseur personnalisé ne prend pas ce paramètre en charge. Ne place jamais de secret TikTok dans le JavaScript du navigateur.
+
+Pour les appels, active **Realtime** pour les tables `koz_call_sessions` et `koz_call_signals` (la migration tente de les ajouter à la publication `supabase_realtime`). Les utilisateurs ne peuvent s’appeler qu’après acceptation d’une demande de conversation.
+
+## Application Android
+
+Le répertoire `android` contient l’application WebView. Elle charge la version hébergée à l’adresse indiquée dans `android/app/src/main/java/com/abeldiemu/mwasi/MainActivity.java`. La caméra et le microphone sont demandés à l’utilisateur lors du premier appel. Pour compiler l’APK debug depuis Windows :
+
+```powershell
+cd android
+.\gradlew.bat assembleDebug
+```
+
+L’APK de sortie se trouve dans `android/app/build/outputs/apk/debug/app-debug.apk`. Les changements web doivent également être déployés sur le site hébergé pour apparaître dans l’APK.
+Le fichier `Mwasi.apk` à la racine est également reconstruit pour conserver le nom de téléchargement déjà utilisé par le site; l’application installée s’affiche sous le nom KOZ.
+Le bouton **Télécharger l’APK Android** sur la page d’accueil propose ce fichier. Sur Android, ouvre le fichier téléchargé et autorise l’installation si le système le demande. Le logo horizontal recadré `koz-brand.png` et l’icône `koz-icon.png` sont dérivés de `koz-logo.jfif`; reconstruis l’APK pour appliquer l’icône à une nouvelle installation.
 
 Crédit développeur : Abel Diemu. Contact : [+243 84 232 2495](tel:+243842322495).
