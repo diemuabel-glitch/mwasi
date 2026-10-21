@@ -14,7 +14,7 @@ Ouvrez ensuite `http://localhost:8000` dans un navigateur récent. Ne lancez pas
 
 ## Fonctionnalités
 
-- Création de compte avec nom, adresse e-mail, téléphone, mot de passe et photo de profil; connexion et vérification du téléphone par code SMS; inscription ou connexion avec Google, Facebook, TikTok et X.
+- Création de compte avec nom, adresse e-mail, téléphone, mot de passe et photo de profil; connexion et vérification du téléphone par code SMS; inscription ou connexion avec Google, Facebook et X.
 - Publications textuelles et téléversement de photos ou vidéos, avec réactions et commentaires.
 - Fil de la communauté, vue dédiée aux vidéos et profils personnels.
 - Recherche de membres, abonnements, demandes et conversations privées.
@@ -37,7 +37,7 @@ La première crée les profils et le chat privé; la seconde crée les tables so
 
 Pour la confirmation par téléphone, active le fournisseur **Phone** et configure un fournisseur SMS dans **Authentication > Providers**. La personne connectée demande un code depuis **Mon profil**, puis le saisit pour vérifier son numéro. Le téléphone est conservé dans Supabase Auth; il n’est pas ajouté aux profils publics. Les photos de profil utilisent le bucket `koz-media` existant et sont publiques, comme les autres médias du site.
 
-Les boutons Google, Facebook et X utilisent les fournisseurs OAuth intégrés de Supabase (**Google**, **Facebook** et **X / Twitter OAuth 2.0**). Crée une application développeur pour chacun, puis active le fournisseur et ajoute son Client ID et son secret dans **Authentication > Providers**. Enregistre l’URL de callback affichée par Supabase chez chaque fournisseur. Dans **Authentication > URL Configuration**, autorise `https://diemuabel-glitch.github.io/mwasi/`, `mwasi://login-callback` pour l’application Android et l’URL locale utilisée pour le test. Le bouton TikTok utilise l’identifiant de fournisseur personnalisé `custom:tiktok`; il faut d’abord l’ajouter dans Supabase **Authentication > Providers > New Provider** et le raccorder au Login Kit TikTok. TikTok exige une URL de redirection HTTPS enregistrée dans son portail; son protocole d’échange de code utilise `client_key`, il faut donc un adaptateur OAuth serveur compatible si le fournisseur personnalisé ne prend pas ce paramètre en charge. Ne place jamais de secret TikTok dans le JavaScript du navigateur.
+Les boutons Google, Facebook et X utilisent les fournisseurs OAuth intégrés de Supabase (**Google**, **Facebook** et **X / Twitter OAuth 2.0**). Crée une application développeur pour chacun, puis active le fournisseur et ajoute son Client ID et son secret dans **Authentication > Providers**. Enregistre l’URL de callback affichée par Supabase chez chaque fournisseur. Dans **Authentication > URL Configuration**, autorise `https://diemuabel-glitch.github.io/mwasi/`, `mwasi://login-callback` pour l’application Android et l’URL locale utilisée pour le test.
 
 Pour les appels, active **Realtime** pour les tables `koz_call_sessions` et `koz_call_signals` (la migration tente de les ajouter à la publication `supabase_realtime`). Les utilisateurs ne peuvent s’appeler qu’après acceptation d’une demande de conversation.
 
