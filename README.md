@@ -2,16 +2,17 @@
 
 Mwasi est une application web simple de suivi du cycle menstruel, en français.
 Le logo de marque est fourni dans `mwasi-logo.png`; l’image originale est conservée dans `mwasi-logo.jfif`.
+La version Android mise à jour est `1.2.0` (code de version 3). La biographie de l’auteur comprend désormais son portrait (`author-abel-diemu.jpg`).
 
 ## Ouvrir l’application
 
-Ouvrez `index.html` dans un navigateur récent. Aucune installation ni connexion Internet n’est nécessaire.
+Ouvrez `index.html` dans un navigateur récent. Le suivi du cycle fonctionne localement; la création de compte, le chat et les liens de mise à jour nécessitent une connexion Internet.
 
 Pour installer l’application sur Android, téléchargez `Mwasi.apk` depuis le bouton de l’écran d’accueil, puis ouvrez le fichier sur votre appareil. Android peut demander d’autoriser l’installation depuis cette source.
 
 ## Fonctionnalités
 
-- Création d’un compte en ligne par pseudo, adresse e-mail et mot de passe, avec confirmation de l’adresse e-mail selon le réglage Supabase.
+- Création d’un compte en ligne par pseudo, adresse e-mail et mot de passe, ou connexion par lien temporaire envoyé par e-mail; la confirmation dépend du réglage Supabase.
 - Recherche facultative de pseudos et demandes de contact à accepter avant toute conversation privée.
 - Chat privé avec blocage et signalement. Les messages sont stockés dans Supabase; les données du cycle et le journal restent locaux.
 - Création d’un profil personnel local avec nom d’affichage, indépendant du pseudo du compte.
@@ -20,12 +21,15 @@ Pour installer l’application sur Android, téléchargez `Mwasi.apk` depuis le 
 - Calendrier avec règles et fenêtre fertile estimées.
 - Personnalisation de l’affichage: thème clair, sombre ou système, contraste renforcé et animations réduites.
 - Rappel quotidien configurable avec notification du navigateur lorsque celui-ci l’autorise.
-- Historique des débuts de règles et mise à jour de la moyenne du cycle à partir des dates enregistrées.
+- Graphique d’évolution des six derniers intervalles de cycle valides et mise à jour automatique de leur moyenne.
+- Calendrier interactif du journal : les jours déjà renseignés sont signalés et les anciennes entrées peuvent être consultées ou modifiées.
 - Journal quotidien d’humeur, de symptômes, de douleur et de notes privées avec un résumé descriptif sur 7 jours.
 - Image botanique locale pour garder l’interface illustrée même hors connexion.
 - Enregistrement des repères dans le stockage local du navigateur.
 - Suppression des données depuis l’application.
-- Animations légères, désactivées par le réglage système de réduction des mouvements.
+- Interface modernisée en bleu avec une animation de démarrage de trois secondes, désactivée par le réglage système de réduction des mouvements.
+- Biographie d’Abel DIEMU MWAMBA, accessible depuis le bouton « À propos de l’auteur » du pied de page.
+- Liens de pied de page vers la version web en ligne et la dernière version Android.
 
 Les dates sont des estimations informatives. Les cycles peuvent varier; l’ovulation et la fenêtre fertile ne peuvent pas être prédites avec certitude par ce calcul et ne constituent pas un moyen de contraception. Mwasi ne remplace pas l’avis d’un professionnel de santé.
 
@@ -40,7 +44,7 @@ L’URL et la clé publique du projet Mwasi sont déjà renseignées dans `supab
 1. Le projet Supabase **Mwasi** utilise l’offre gratuite et une région européenne. Si vous recréez le projet, copiez son URL et sa clé publique `anon` (ou `publishable`) dans `supabase-config.js`. Ne mettez jamais une clé `service_role` ni un secret OAuth dans ce fichier.
 2. Dans **Authentication > URL Configuration**, conservez l’URL du site `https://diemuabel-glitch.github.io/mwasi/` et les URL de retour nécessaires. La confirmation d’e-mail est définie dans les paramètres d’authentification Supabase.
 3. Pour activer ultérieurement Google, Facebook ou TikTok, configurez les identifiants OAuth dans Supabase, autorisez les URL de retour du site et de l’application Android (`mwasi://login-callback`), puis activez uniquement le fournisseur configuré dans `supabase-config.js`. TikTok nécessite une configuration personnalisée Supabase.
-4. Déployez ensemble `supabase-config.js`, `auth.js` et `index.html`. L’APK affiche le site distant; les changements de l’interface sont donc disponibles après le déploiement du site. Reconstruisez l’APK uniquement si le code Android lui-même change.
+4. Déployez ensemble `supabase-config.js`, `auth.js`, `index.html` et les ressources nécessaires. L’APK affiche le site distant; les changements de l’interface sont disponibles après le déploiement du site. Reconstruisez l’APK uniquement si le code Android lui-même change.
 
 Un pseudo n’est trouvable que si son propriétaire active **Me rendre trouvable**. La demande doit être acceptée avant de commencer à envoyer des messages. Les utilisateurs peuvent bloquer un compte ou signaler une conversation; les signalements sont conservés dans `chat_reports` pour examen par le propriétaire du projet. Google, Facebook et TikTok ne sont pas activés par défaut.
 

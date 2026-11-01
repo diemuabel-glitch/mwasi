@@ -12,6 +12,7 @@ let currentConversation = null;
 let currentPeer = null;
 let activeConversationChannel = null;
 let authMode = 'signup';
+let authMethod = 'password';
 let chatRefreshTimer = null;
 
 function showAuthStatus(message, state = '') {
@@ -33,17 +34,39 @@ function element(tag, className, text) {
 
 function setAuthMode(mode) {
   authMode = mode;
-  const signingUp = mode === 'signup';
+  updateAuthForm();
+}
+
+function setAuthMethod(method) {
+  authMethod = method;
+  updateAuthForm();
+}
+
+function updateAuthForm() {
+  const signingUp = authMode === 'signup';
+  const passwordMethod = authMethod === 'password';
   document.getElementById('auth-signup-fields').hidden = !signingUp;
-  document.getElementById('auth-confirm-field').hidden = !signingUp;
+  document.getElementById('auth-password-field').hidden = !passwordMethod;
+  document.getElementById('auth-confirm-field').hidden = !passwordMethod || !signingUp;
   document.getElementById('auth-display-name').required = signingUp;
-  document.getElementById('auth-password-confirm').required = signingUp;
+  document.getElementById('auth-password').required = passwordMethod;
+  document.getElementById('auth-password').disabled = !passwordMethod;
+  document.getElementById('auth-password-confirm').required = passwordMethod && signingUp;
   document.getElementById('auth-password').autocomplete = signingUp ? 'new-password' : 'current-password';
-  document.getElementById('auth-password-confirm').disabled = !signingUp;
-  document.getElementById('auth-submit').textContent = signingUp ? 'Créer mon compte' : 'Me connecter';
+  document.getElementById('auth-password-confirm').disabled = !passwordMethod || !signingUp;
+  document.getElementById('auth-submit').textContent = authMethod === 'magic'
+    ? (signingUp ? 'Créer mon compte par e-mail' : 'Recevoir mon lien de connexion')
+    : (signingUp ? 'Créer mon compte' : 'Me connecter');
   document.getElementById('auth-mode-toggle').textContent = signingUp
     ? 'J’ai déjà un compte : me connecter'
     : 'Créer un nouveau compte';
+  document.getElementById('auth-method-toggle').textContent = passwordMethod
+    ? 'Ou recevoir un lien de connexion par e-mail'
+    : 'Utiliser plutôt un mot de passe';
+  document.getElementById('auth-method-toggle').setAttribute('aria-pressed', String(!passwordMethod));
+  document.getElementById('auth-method-help').textContent = passwordMethod
+    ? 'Vous pouvez aussi vous connecter sans mot de passe grâce à un lien envoyé par e-mail.'
+    : 'Un lien temporaire sera envoyé à votre adresse. Consultez votre boîte de réception pour terminer la connexion. Aucun mot de passe ne sera demandé.';
 }
 
 function clearChatView() {
@@ -69,6 +92,7 @@ function renderAccount(user) {
   const signOutButton = document.getElementById('auth-signout');
   authForm.hidden = Boolean(user);
   document.getElementById('auth-mode-toggle').hidden = Boolean(user);
+  document.getElementById('auth-method-toggle').hidden = Boolean(user);
   document.querySelector('.auth-consent').hidden = Boolean(user);
   document.querySelector('.auth-providers').hidden = Boolean(user);
 
@@ -99,8 +123,11 @@ function renderAccount(user) {
   document.getElementById('auth-account-email').textContent = email;
   accountDetails.hidden = false;
   signOutButton.hidden = false;
-  document.getElementById('profile-description').textContent =
-    'Votre compte est connecté. Le pseudo en ligne et le nom enregistré localement sont indépendants.';
+  const profileDescription = document.getElementById('profile-description');
+  if (profileDescription) {
+    profileDescription.textContent =
+      'Votre compte est connecté. Le pseudo en ligne et le nom enregistré localement sont indépendants.';
+  }
   chatAuthRequired.hidden = true;
   chatWorkspace.hidden = false;
   showAuthStatus(`Connecté : ${name}. Vos données de cycle restent sur cet appareil.`, 'success');
@@ -387,25 +414,53 @@ async function initializeAuth() {
 
       try {
         if (authMode === 'signup') {
-          if (password !== document.getElementById('auth-password-confirm').value) {
+          if (authMethod === 'password' && password !== document.getElementById('auth-password-confirm').value) {
             throw new Error('Les mots de passe ne correspondent pas.');
           }
-          const { data, error } = await supabase.auth.signUp({
+          if (authMethod === 'magic') {
+            const { data, error } = await supabase.auth.signInWithOtp({
+              email,
+              options: {
+                shouldCreateUser: authMode === 'signup',
+                data: { display_name: displayName },
+                emailRedirectTo: window.location.href.split(/[?#]/, 1)[0]
+              }
+            });
+            if (error) throw error;
+            showAuthStatus(
+              data.user
+                ? 'Compte créé. Consultez votre boîte e-mail pour confirmer votre adresse et ouvrir votre session.'
+                : 'Si cette adresse est autorisée, un lien de connexion vient d’être envoyé. Consultez aussi vos courriers indésirables.',
+              'success'
+            );
+          } else {
+            const { data, error } = await supabase.auth.signUp({
+              email,
+              password,
+              options: {
+                data: { display_name: displayName },
+                emailRedirectTo: window.location.href.split(/[?#]/, 1)[0]
+              }
+            });
+            if (error) throw error;
+            if (data.session && data.user) {
+              await ensureUserProfile(data.user, displayName);
+              renderAccount(data.user);
+              showAuthStatus('Votre compte Mwasi est créé et connecté.', 'success');
+            } else {
+              showAuthStatus('Compte créé. Vérifiez votre adresse e-mail pour confirmer l’inscription avant de vous connecter.', 'success');
+            }
+          }
+        } else if (authMethod === 'magic') {
+          const { error } = await supabase.auth.signInWithOtp({
             email,
-            password,
             options: {
-              data: { display_name: displayName },
+              shouldCreateUser: false,
               emailRedirectTo: window.location.href.split(/[?#]/, 1)[0]
             }
           });
           if (error) throw error;
-          if (data.session && data.user) {
-            await ensureUserProfile(data.user, displayName);
-            renderAccount(data.user);
-            showAuthStatus('Votre compte Mwasi est créé et connecté.', 'success');
-          } else {
-            showAuthStatus('Compte créé. Vérifiez votre adresse e-mail pour confirmer l’inscription avant de vous connecter.', 'success');
-          }
+          showAuthStatus('Si cette adresse correspond à un compte, un lien de connexion a été envoyé. Vérifiez votre boîte de réception.', 'success');
         } else {
           const { data, error } = await supabase.auth.signInWithPassword({ email, password });
           if (error) throw error;
@@ -425,6 +480,12 @@ async function initializeAuth() {
       showAuthStatus(authMode === 'signup'
         ? 'Saisissez votre pseudo, votre adresse e-mail et un mot de passe d’au moins 8 caractères.'
         : 'Saisissez l’adresse e-mail et le mot de passe de votre compte.');
+    });
+    document.getElementById('auth-method-toggle').addEventListener('click', () => {
+      setAuthMethod(authMethod === 'password' ? 'magic' : 'password');
+      showAuthStatus(authMethod === 'magic'
+        ? 'Un lien temporaire sera envoyé à votre adresse e-mail.'
+        : 'La connexion par e-mail et mot de passe est sélectionnée.');
     });
     setAuthMode('signup');
 
